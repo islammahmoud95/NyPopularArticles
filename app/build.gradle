@@ -1,0 +1,139 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id "dagger.hilt.android.plugin"
+
+}
+
+def CONFIG = { k -> "\"${project.properties.get(k)}\"" }
+
+android {
+    namespace 'com.example.nypopulararticle'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.nypopulararticle"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        buildConfigField 'String', 'API_KEY', CONFIG('api.Key')
+        buildConfigField 'String', 'BASE_URL', CONFIG('base.url')
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+        }
+        debug {
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        compose true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.7"
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifeCycleversion"
+
+
+    //Dagger Hilt
+    implementation "com.google.dagger:hilt-android:$daggerVersion"
+
+    kapt "com.google.dagger:hilt-compiler:$daggerVersion"
+    kapt "androidx.hilt:hilt-compiler:$androidXHiltCompilerVersion"
+    implementation "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
+
+    //compose
+    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation platform('androidx.compose:compose-bom:2022.10.00')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material3:material3'
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+
+
+    //log tools
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptorVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutinesAdapterVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+
+    // loggingInterceptor
+    implementation "com.github.ihsanbal:LoggingInterceptor:$logging_interceptor_version"
+    implementation "com.github.Gruzer:simple-gauge-android:$gauge_version"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+
+
+    // Local Unit Tests
+    testImplementation "junit:junit:$version_junit"
+    testImplementation "androidx.arch.core:core-testing:$version_core_test"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_kotlinx_coroutines_test"
+    testImplementation "com.google.truth:truth:$version_truth"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$version_mockwebserver"
+
+    // Instrumented Unit Tests
+    androidTestImplementation "androidx.arch.core:core-testing:$version_core_test"
+    androidTestImplementation "com.google.truth:truth:$version_truth"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_kotlinx_coroutines_test"
+    androidTestImplementation "androidx.test.ext:junit:$version_androidx_junit_ext"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$daggerVersion"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$daggerVersion"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$daggerVersion"
+    androidTestImplementation "androidx.navigation:navigation-testing:$version_navigation_testing"
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$version_espresso_contrib") {
+        exclude group: 'org.checkerframework'
+    }
+
+    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
+
+
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+}
